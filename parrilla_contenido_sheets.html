@@ -476,18 +476,21 @@
 
                 if (data.values && data.values.length > 0) {
                     data.values.forEach(row => {
-                        if (row[0] && row[9] === PARRILLA_TYPE) { // Filtrar por tipo de parrilla (columna J)
-                            contentData.push({
-                                id: row[0],
-                                mes: row[1],
-                                semana: parseInt(row[2]),
-                                dia: parseInt(row[3]),
-                                plataforma: row[4],
-                                tema: row[5] || '',
-                                descripcion: row[6] || '',
-                                responsable: row[7] || 'Sin asignar',
-                                completado: row[8] === 'true'
-                            });
+                        if (row[0]) { // Si tiene ID
+                            // Solo cargar datos del tipo de parrilla actual (si existe la columna 10)
+                            if (row.length < 10 || row[9] === PARRILLA_TYPE) {
+                                contentData.push({
+                                    id: row[0],
+                                    mes: row[1],
+                                    semana: parseInt(row[2]) || 0,
+                                    dia: parseInt(row[3]) || 0,
+                                    plataforma: row[4],
+                                    tema: row[5] || '',
+                                    descripcion: row[6] || '',
+                                    responsable: row[7] || 'Sin asignar',
+                                    completado: row[8] === 'true'
+                                });
+                            }
                         }
                     });
                 }
