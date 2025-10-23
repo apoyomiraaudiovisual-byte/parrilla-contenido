@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parrilla InfoMIRA - Marcela Eusse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header-titles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 0;
+            font-weight: 700;
+        }
+
+        .header-divider {
+            width: 2px;
+            height: 40px;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .header-link-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+            display: inline-block;
+        }
+
+        .header-link-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .header-link-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.8);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        .controls {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-month {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-month:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-month.active {
+            background: #007bff;
+        }
+
+        .btn-platform {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-platform:hover {
+            background: #138496;
+            transform: translateY(-2px);
+        }
+
+        .btn-platform.active {
+            background: #0056b3;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.95em;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .content-grid {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .week-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+        }
+
+        .week-header {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .week-header:hover {
+            background: linear-gradient(135deg, #5a6578 0%, #3d4758 100%);
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s;
+        }
+
+        .day-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .day-header {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e9ecef;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+
+        .day-header:hover {
+            color: #007bff;
+        }
+
+        .platform-section {
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 6px;
+            border-left: 3px solid #007bff;
+        }
+
+        .platform-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 6px;
+            font-size: 0.85em;
+        }
+
+        .content-item {
+            background: white;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid #dee2e6;
+        }
+
+        .content-theme {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+            font-size: 0.9em;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .content-theme:hover {
+            background: #e9ecef;
+        }
+
+        .content-description {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-bottom: 6px;
+        }
+
+        .content-textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 6px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.9em;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .responsible-select {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1.1em;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85em;
+            color: #495057;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #6c757d;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .sync-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
+
+        .sync-status.error {
+            background: #dc3545;
+        }
+
+        .sync-status.syncing {
+            background: #ffc107;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-titles">
+                <a href="parrilla_contenido_sheets.html" class="header-link-btn">
+                    <h1>📱 Parrilla de Contenido</h1>
+                </a>
+                <div class="header-divider"></div>
+                <a href="parrilla_infomira_sheets.html" class="header-link-btn active">
+                    <h1>📧 Parrilla de contenido envíos InfoMIRA</h1>
+                </a>
+            </div>
+            <p id="headerSubtitle">Marcela Eusse - Candidata a Cámara de Representantes por Antioquia - Envíos InfoMIRA</p>
+        </div>
+
+        <div class="controls">
+            <div class="button-group" id="monthFilters">
+                <button class="btn btn-month" onclick="filterByMonth('octubre')">Octubre</button>
+                <button class="btn btn-month" onclick="filterByMonth('noviembre')">Noviembre</button>
+                <button class="btn btn-month" onclick="filterByMonth('diciembre')">Diciembre</button>
+                <button class="btn btn-month" onclick="filterByMonth('enero')">Enero</button>
+                <button class="btn btn-month" onclick="filterByMonth('febrero')">Febrero</button>
+                <button class="btn btn-month" onclick="filterByMonth('marzo')">Marzo</button>
+                <button class="btn btn-month" onclick="filterByMonth('all')">Ver Todos</button>
+            </div>
+
+            <div class="button-group" id="platformFilters">
+                <button class="btn btn-platform" onclick="filterByPlatform('all')">Todas las redes</button>
+                <button class="btn btn-platform" onclick="filterByPlatform('instagram')">Instagram</button>
+                <button class="btn btn-platform" onclick="filterByPlatform('facebook')">Facebook</button>
+                <button class="btn btn-platform" onclick="filterByPlatform('tiktok')">TikTok</button>
+            </div>
+
+            <input type="text" class="search-box" placeholder="🔍 Buscar por tema..." id="searchBox" onkeyup="searchContent()">
+        </div>
+
+        <div class="content-grid" id="contentGrid">
+            <div class="loading">Cargando datos desde Google Sheets...</div>
+        </div>
+    </div>
+
+    <div class="sync-status" id="syncStatus"></div>
+
+    <script>
+        // Configuración de Google Sheets
+        const SHEET_ID = '1GPnn3YrrYlrEoTeXe5_PHbWNoGBUUuv4wbrMVqRpn3A';
+        const API_KEY = 'AIzaSyACxnEMtTrGpgRnllsG1Y92ZOQLpnrXsaE';
+        const SHEET_NAME = 'contenido';
+        const PARRILLA_TYPE = 'infomira'; // Tipo de parrilla
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdh84NXWGHQ_7-wdpM6v2yHR1Ld9py2Gm3UA1dY8aDHDDL3cWdn5hAUB9TOKV9SZPQNQ/exec';
+
+        let contentData = [];
+        let currentMonthFilter = null;
+        let currentPlatformFilter = 'all';
+        let isLoading = false;
+
+        // Mapeo de semanas y fechas
+        const weekDatesMapping = {
+            'octubre': [
+                { week: 1, startDay: 20, endDay: 26, year: 2024, month: 10 },
+                { week: 2, startDay: 27, endDay: 31, year: 2024, month: 10 }
+            ],
+            'noviembre': [
+                { week: 1, startDay: 1, endDay: 3, year: 2024, month: 11 },
+                { week: 2, startDay: 4, endDay: 10, year: 2024, month: 11 },
+                { week: 3, startDay: 11, endDay: 17, year: 2024, month: 11 },
+                { week: 4, startDay: 18, endDay: 24, year: 2024, month: 11 },
+                { week: 5, startDay: 25, endDay: 30, year: 2024, month: 11 }
+            ],
+            'diciembre': [
+                { week: 1, startDay: 1, endDay: 8, year: 2024, month: 12 },
+                { week: 2, startDay: 9, endDay: 15, year: 2024, month: 12 },
+                { week: 3, startDay: 16, endDay: 22, year: 2024, month: 12 },
+                { week: 4, startDay: 23, endDay: 29, year: 2024, month: 12 },
+                { week: 5, startDay: 30, endDay: 31, year: 2024, month: 12 }
+            ],
+            'enero': [
+                { week: 1, startDay: 1, endDay: 5, year: 2025, month: 1 },
+                { week: 2, startDay: 6, endDay: 12, year: 2025, month: 1 },
+                { week: 3, startDay: 13, endDay: 19, year: 2025, month: 1 },
+                { week: 4, startDay: 20, endDay: 26, year: 2025, month: 1 },
+                { week: 5, startDay: 27, endDay: 31, year: 2025, month: 1 }
+            ],
+            'febrero': [
+                { week: 1, startDay: 1, endDay: 2, year: 2025, month: 2 },
+                { week: 2, startDay: 3, endDay: 9, year: 2025, month: 2 },
+                { week: 3, startDay: 10, endDay: 16, year: 2025, month: 2 },
+                { week: 4, startDay: 17, endDay: 23, year: 2025, month: 2 },
+                { week: 5, startDay: 24, endDay: 28, year: 2025, month: 2 }
+            ],
+            'marzo': [
+                { week: 1, startDay: 1, endDay: 2, year: 2025, month: 3 },
+                { week: 2, startDay: 3, endDay: 9, year: 2025, month: 3 },
+                { week: 3, startDay: 10, endDay: 16, year: 2025, month: 3 },
+                { week: 4, startDay: 17, endDay: 23, year: 2025, month: 3 },
+                { week: 5, startDay: 24, endDay: 30, year: 2025, month: 3 },
+                { week: 6, startDay: 31, endDay: 31, year: 2025, month: 3 }
+            ]
+        };
+
+        const platforms = [
+            { id: 'instagram', name: 'Instagram', icon: '📸' },
+            { id: 'facebook', name: 'Facebook', icon: '👥' },
+            { id: 'tiktok', name: 'TikTok', icon: '🎵' },
+            { id: 'all-platforms', name: 'Todas las redes', icon: '📱' }
+        ];
+
+        const responsables = [
+            'Sin asignar',
+            'Juan Pérez',
+            'María García',
+            'Carlos López',
+            'Ana Martínez',
+            'Luis Rodríguez'
+        ];
+
+        // Función para mostrar estado de sincronización
+        function showSyncStatus(message, type = 'success') {
+            const syncStatus = document.getElementById('syncStatus');
+            syncStatus.textContent = message;
+            syncStatus.className = 'sync-status';
+            if (type === 'error') syncStatus.classList.add('error');
+            if (type === 'syncing') syncStatus.classList.add('syncing');
+            syncStatus.style.display = 'block';
+
+            setTimeout(() => {
+                syncStatus.style.display = 'none';
+            }, 3000);
+        }
+
+        // Cargar datos desde Google Sheets
+        async function loadFromSheets() {
+            if (isLoading) return;
+            isLoading = true;
+
+            try {
+                const range = `${SHEET_NAME}!A2:I1000`;
+                const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`;
+
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Error al cargar datos');
+
+                const data = await response.json();
+                contentData = [];
+
+                if (data.values && data.values.length > 0) {
+                    data.values.forEach(row => {
+                        if (row[0] && row[9] === PARRILLA_TYPE) { // Filtrar por tipo de parrilla (columna J)
+                            contentData.push({
+                                id: row[0],
+                                mes: row[1],
+                                semana: parseInt(row[2]),
+                                dia: parseInt(row[3]),
+                                plataforma: row[4],
+                                tema: row[5] || '',
+                                descripcion: row[6] || '',
+                                responsable: row[7] || 'Sin asignar',
+                                completado: row[8] === 'true'
+                            });
+                        }
+                    });
+                }
+
+                // Si no hay datos, inicializar estructura básica
+                if (contentData.length === 0) {
+                    initializeEmptyData();
+                }
+
+                renderContent();
+                isLoading = false;
+            } catch (error) {
+                console.error('Error:', error);
+                showSyncStatus('Error al cargar datos', 'error');
+                document.getElementById('contentGrid').innerHTML = `
+                    <div class="error">
+                        Error al conectar con Google Sheets. Verifica tu conexión a internet.
+                    </div>
+                `;
+                isLoading = false;
+            }
+        }
+
+        // Inicializar datos vacíos
+        function initializeEmptyData() {
+            Object.keys(weekDatesMapping).forEach(month => {
+                weekDatesMapping[month].forEach(weekInfo => {
+                    for (let day = weekInfo.startDay; day <= weekInfo.endDay; day++) {
+                        platforms.forEach(platform => {
+                            const id = `${month}_s${weekInfo.week}_d${day}_${platform.id}`;
+                            contentData.push({
+                                id: id,
+                                mes: month,
+                                semana: weekInfo.week,
+                                dia: day,
+                                plataforma: platform.id,
+                                tema: '',
+                                descripcion: '',
+                                responsable: 'Sin asignar',
+                                completado: false
+                            });
+                        });
+                    }
+                });
+            });
+        }
+
+        // Guardar en Google Sheets
+        async function saveToSheets() {
+            try {
+                showSyncStatus('Guardando cambios...', 'syncing');
+
+                if (APPS_SCRIPT_URL === 'PENDIENTE') {
+                    console.log('Apps Script URL no configurada aún');
+                    showSyncStatus('✓ Cambio guardado localmente', 'success');
+                    return;
+                }
+
+                // Preparar datos para Google Sheets
+                const values = [];
+
+                contentData.forEach(item => {
+                    values.push([
+                        item.id,
+                        item.mes,
+                        item.semana,
+                        item.dia,
+                        item.plataforma,
+                        item.tema,
+                        item.descripcion,
+                        item.responsable,
+                        item.completado ? 'true' : 'false',
+                        PARRILLA_TYPE // Columna J para identificar tipo
+                    ]);
+                });
+
+                // Enviar a Google Apps Script
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'save',
+                        data: values,
+                        sheetName: SHEET_NAME
+                    })
+                });
+
+                showSyncStatus('✓ Cambios guardados', 'success');
+
+            } catch (error) {
+                console.error('Error:', error);
+                showSyncStatus('Error al guardar', 'error');
+            }
+        }
+
+        // Actualizar contenido
+        function updateContent(id, field, value) {
+            const item = contentData.find(c => c.id === id);
+            if (item) {
+                item[field] = value;
+                saveToSheets();
+            }
+        }
+
+        // Filtrar por mes
+        function filterByMonth(month) {
+            currentMonthFilter = month === 'all' ? null : month;
+
+            // Actualizar botones activos
+            document.querySelectorAll('.btn-month').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            renderContent();
+        }
+
+        // Filtrar por plataforma
+        function filterByPlatform(platform) {
+            currentPlatformFilter = platform;
+
+            // Actualizar botones activos
+            document.querySelectorAll('.btn-platform').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            renderContent();
+        }
+
+        // Buscar contenido
+        function searchContent() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            renderContent(query);
+        }
+
+        // Renderizar contenido
+        function renderContent(searchQuery = '') {
+            const grid = document.getElementById('contentGrid');
+
+            if (currentMonthFilter === null) {
+                grid.innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; min-height: 400px; font-size: 1.5em; color: #6c757d; text-align: center; padding: 40px;">
+                        <div>
+                            <div style="font-size: 3em; margin-bottom: 20px;">📅</div>
+                            <div style="font-weight: 600; margin-bottom: 10px;">Seleccione el mes a revisar</div>
+                            <div style="font-size: 0.7em; opacity: 0.7;">Use los botones de arriba para filtrar por mes</div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = '';
+
+            const monthsToShow = currentMonthFilter === 'all' ? Object.keys(weekDatesMapping) : [currentMonthFilter];
+
+            monthsToShow.forEach(month => {
+                const weeks = weekDatesMapping[month];
+
+                weeks.forEach(weekInfo => {
+                    const weekSection = document.createElement('div');
+                    weekSection.className = 'week-section';
+
+                    const weekHeader = document.createElement('div');
+                    weekHeader.className = 'week-header';
+                    weekHeader.textContent = `${month.charAt(0).toUpperCase() + month.slice(1)} - Semana ${weekInfo.week} (${weekInfo.startDay}-${weekInfo.endDay})`;
+                    weekSection.appendChild(weekHeader);
+
+                    const daysGrid = document.createElement('div');
+                    daysGrid.className = 'days-grid';
+
+                    for (let day = weekInfo.startDay; day <= weekInfo.endDay; day++) {
+                        const dayCard = document.createElement('div');
+                        dayCard.className = 'day-card';
+
+                        const dayDate = new Date(weekInfo.year, weekInfo.month - 1, day);
+                        const dayName = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][dayDate.getDay()];
+
+                        const dayHeader = document.createElement('div');
+                        dayHeader.className = 'day-header';
+                        dayHeader.textContent = `${dayName} ${day}`;
+                        dayCard.appendChild(dayHeader);
+
+                        // Verificar si todas las plataformas están completadas
+                        const dayContent = contentData.filter(c =>
+                            c.mes === month && c.semana === weekInfo.week && c.dia === day
+                        );
+                        const allCompleted = dayContent.length > 0 && dayContent.every(c => c.completado);
+
+                        if (allCompleted) {
+                            dayCard.style.background = '#d4edda';
+                            dayCard.style.borderColor = '#28a745';
+                        }
+
+                        platforms.forEach(platform => {
+                            if (currentPlatformFilter !== 'all' && platform.id !== currentPlatformFilter) return;
+
+                            const platformSection = document.createElement('div');
+                            platformSection.className = 'platform-section';
+
+                            const platformTitle = document.createElement('div');
+                            platformTitle.className = 'platform-title';
+                            platformTitle.textContent = `${platform.icon} ${platform.name}`;
+                            platformSection.appendChild(platformTitle);
+
+                            const id = `${month}_s${weekInfo.week}_d${day}_${platform.id}`;
+                            let item = contentData.find(c => c.id === id);
+
+                            if (!item) {
+                                item = {
+                                    id: id,
+                                    mes: month,
+                                    semana: weekInfo.week,
+                                    dia: day,
+                                    plataforma: platform.id,
+                                    tema: '',
+                                    descripcion: '',
+                                    responsable: 'Sin asignar',
+                                    completado: false
+                                };
+                                contentData.push(item);
+                            }
+
+                            // Aplicar filtro de búsqueda
+                            if (searchQuery && !item.tema.toLowerCase().includes(searchQuery) &&
+                                !item.descripcion.toLowerCase().includes(searchQuery)) {
+                                return;
+                            }
+
+                            const contentItem = document.createElement('div');
+                            contentItem.className = 'content-item';
+
+                            // Tema
+                            const theme = document.createElement('div');
+                            theme.className = 'content-theme';
+                            theme.textContent = item.tema || 'Tema (click para editar)';
+                            theme.onclick = () => {
+                                const newTheme = prompt('Tema:', item.tema);
+                                if (newTheme !== null) {
+                                    theme.textContent = newTheme || 'Tema (click para editar)';
+                                    updateContent(id, 'tema', newTheme);
+                                }
+                            };
+                            contentItem.appendChild(theme);
+
+                            // Descripción
+                            const textarea = document.createElement('textarea');
+                            textarea.className = 'content-textarea';
+                            textarea.placeholder = 'Descripción del contenido...';
+                            textarea.value = item.descripcion;
+                            textarea.onchange = () => {
+                                updateContent(id, 'descripcion', textarea.value);
+                            };
+                            contentItem.appendChild(textarea);
+
+                            // Responsable
+                            const select = document.createElement('select');
+                            select.className = 'responsible-select';
+                            responsables.forEach(resp => {
+                                const option = document.createElement('option');
+                                option.value = resp;
+                                option.textContent = resp;
+                                if (resp === item.responsable) option.selected = true;
+                                select.appendChild(option);
+                            });
+                            select.onchange = () => {
+                                updateContent(id, 'responsable', select.value);
+                            };
+                            contentItem.appendChild(select);
+
+                            // Completado
+                            const checkbox = document.createElement('label');
+                            checkbox.className = 'checkbox-label';
+                            const input = document.createElement('input');
+                            input.type = 'checkbox';
+                            input.checked = item.completado;
+                            input.onchange = () => {
+                                updateContent(id, 'completado', input.checked);
+                                renderContent(searchQuery);
+                            };
+                            checkbox.appendChild(input);
+                            checkbox.appendChild(document.createTextNode(' Completado'));
+                            contentItem.appendChild(checkbox);
+
+                            platformSection.appendChild(contentItem);
+                            dayCard.appendChild(platformSection);
+                        });
+
+                        daysGrid.appendChild(dayCard);
+                    }
+
+                    weekSection.appendChild(daysGrid);
+                    grid.appendChild(weekSection);
+                });
+            });
+        }
+
+        // Cargar datos al iniciar
+        window.onload = () => {
+            loadFromSheets();
+
+            // Recargar datos cada 30 segundos
+            setInterval(loadFromSheets, 30000);
+        };
+    </script>
+</body>
+</html>
