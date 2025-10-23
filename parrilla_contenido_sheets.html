@@ -465,7 +465,7 @@
             isLoading = true;
 
             try {
-                const range = `${SHEET_NAME}!A2:I1000`;
+                const range = `${SHEET_NAME}!A2:J1000`;
                 const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`;
 
                 const response = await fetch(url);
@@ -474,9 +474,13 @@
                 const data = await response.json();
                 contentData = [];
 
+                console.log('📊 Datos recibidos:', data.values ? data.values.length + ' filas' : 'Sin datos');
+                console.log('🎯 Buscando tipo:', PARRILLA_TYPE);
+
                 if (data.values && data.values.length > 0) {
-                    data.values.forEach(row => {
+                    data.values.forEach((row, index) => {
                         if (row[0]) { // Si tiene ID
+                            console.log(`Fila ${index + 2}: ID=${row[0]}, Tipo=${row[9]}, Columnas=${row.length}`);
                             // Solo cargar datos del tipo de parrilla actual (si existe la columna 10)
                             if (row.length < 10 || row[9] === PARRILLA_TYPE) {
                                 contentData.push({
@@ -497,9 +501,11 @@
 
                 // Si no hay datos, inicializar estructura básica
                 if (contentData.length === 0) {
+                    console.log('⚠️ No se encontraron datos, inicializando estructura vacía');
                     initializeEmptyData();
                 }
 
+                console.log('✅ Datos cargados:', contentData.length, 'items');
                 renderContent();
                 isLoading = false;
             } catch (error) {
